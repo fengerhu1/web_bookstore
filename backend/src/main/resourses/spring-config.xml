@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close" p:driverClass="com.mysql.jdbc.Driver"
+          p:jdbcUrl="jdbc:mysql://localhost:3306/test" p:user="root"
+          p:password="19980211Hu" p:maxPoolSize="40" p:minPoolSize="1"
+          p:initialPoolSize="1" p:maxIdleTime="20" />
+
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
+          p:dataSource-ref="dataSource">
+        <property name="mappingResources">
+            <list>
+                <value>sample/Book.hbm.xml</value>
+                <value>sample/Amountpermouth.hbm.xml</value>
+                <value>sample/Shopcart.hbm.xml</value>
+                <value>sample/Userorder.hbm.xml</value>
+                <value>sample/Users.hbm.xml</value>
+            </list>
+        </property>
+        <!-- Hibernate SessionFactory -->
+        <property name="hibernateProperties">
+            <value>
+                hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
+                hibernate.hbm2ddl.auto=update
+                hibernate.show_sql=true
+                hibernate.format_sql=true
+            </value>
+        </property>
+    </bean>
+
+    <!-- DAO Bean -->
+    <bean id="bookDao" class="dao.impl.BookDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <bean id="DeleteBook" class="administrator.Deletebook">
+        <property name="obj" value="Book" />
+    </bean>
+    <bean id="AddAdmin" class="administrator.AddAdmin">
+        <property name="obj">
+            <value>User</value>
+        </property>
+    </bean>
+    <bean id="AddBook" class="administrator.Addbook">
+        <property name="concretebook" ref="CreateBook"/>
+    </bean>
+    <bean id="CreateBook" class="sample.Book">
+        <property name="title" value="unKnow" />
+        <property name="language" value="unKnow" />
+        <property name="author" value="unKnow" />
+    </bean>
+</beans>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="sample.Userorder" table="userorder" schema="test">
+        <id name="id">
+            <column name="ID" sql-type="varchar(45)" length="45"/>
+        </id>
+        <property name="username">
+            <column name="username" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="sum">
+            <column name="sum" sql-type="varchar(45)" length="45" not-null="true"/>
+        </property>
+        <property name="detail">
+            <column name="detail" sql-type="varchar(200)" length="200" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

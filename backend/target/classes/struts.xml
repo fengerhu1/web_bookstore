@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <!-- 支持动态调用 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <!-- 设置开发模式 -->
+    <constant name="struts.devMode" value="true"/>
+
+    <package name="default" namespace="/" extends="struts-default">
+
+        <action name="bookback" class="action.Bookmanagenew" method="get">
+
+        </action>
+        <action name="getuserback" class="action.Getuserback" method="getuser">
+
+        </action>
+        <action name="loginback" class="action.Login" method="doGet">
+
+        </action>
+        <action name="registback" class="action.Regist" method="doregist">
+
+        </action>
+        <action name="saveback" class="action.Save" method="dosave">
+
+        </action>
+        <action name="shopcartback" class="action.Shopcartmanage" method="shopcart">
+
+        </action>
+        <action name="UserManagerServlet" class="action.UserManagerServlet" method="usermanage">
+
+        </action>
+        <action name="personback" class="action.Personmanage" method="manage">
+
+        </action>
+        <action name="savepersonback" class="action.Saveperson" method="save">
+
+        </action>
+        <action name="orderback" class="action.Ordermanager" method="manager">
+
+        </action>
+        <action name="getorderback" class="action.Getorder" method="get">
+
+        </action>
+        <action name="monthlyback" class="action.Monthlymanager" method="monthly">
+
+        </action>
+        <action name="addbook" class="administrator.Addbook" method="add">
+
+        </action>
+        <action name="modifybook" class="administrator.Modifybook" method="modify">
+
+        </action>
+        <action name="deletebook" class="administrator.Deletebook" method="delete">
+
+        </action>
+        <action name="admin" class="administrator.Admin" method="isAdmin">
+
+        </action>
+        <action name="addadmin" class="administrator.AddAdmin" method="addAdmin">
+
+        </action>
+        <action name="deleteadmin" class="administrator.DeleteAdmin" method="deleteAdmin">
+
+        </action>
+        <action name="modifyadmin" class="administrator.ModifyAdmin" method="modify">
+
+        </action>
+    </package>
+
+</struts>
