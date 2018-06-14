@@ -16,12 +16,17 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import service.AppService;
 //import org.hibernate.cfg.Configuration;
 
 /**
  * Servlet implementation class UserManagerServlet
  */
 public class Getorder extends  ActionSupport {
+    private AppService appService;
+    public void setAppService(AppService appService) {
+        this.appService = appService;
+    }
     public Getorder(){}
     private JSONArray result1;
     public JSONArray getResult(){
@@ -32,16 +37,17 @@ public class Getorder extends  ActionSupport {
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("text/html;charset=utf-8");
         PrintWriter pw = response.getWriter();
-        Configuration configuration = new Configuration().configure();
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
+        //Configuration configuration = new Configuration().configure();
+        //SessionFactory sessionFactory = configuration.buildSessionFactory();
+        //Session session = sessionFactory.getCurrentSession();
         HttpSession session1 = request.getSession();
         String name = (String)session1.getAttribute("name");
-        Transaction tx = null;
+        //Transaction tx = null;
 
         try{
-            tx=session.beginTransaction();
-            List<Userorder> result = session.createQuery("from Userorder where username = :username").setParameter("username", name).list();
+            //tx=session.beginTransaction();
+            //List<Userorder> result = session.createQuery("from Userorder where username = :username").setParameter("username", name).list();
+            List<Userorder> result = appService.getUserorderById(name);
             Iterator<Userorder> it = result.iterator();
 
             ArrayList<JSONArray> booksJson = new ArrayList<JSONArray>();
@@ -63,9 +69,9 @@ public class Getorder extends  ActionSupport {
             System.out.println(userorders);
 
             result1 = userorders;
-            tx.commit();
+            //tx.commit();
         } catch (Exception e) {
-            tx.rollback();
+            //tx.rollback();
             throw new RuntimeException(e);
         } finally{
             //session.close();

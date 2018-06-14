@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
+import service.AppService;
 
 import javax.servlet.http.HttpSession;
 //import org.hibernate.cfg.Configuration;
@@ -26,6 +27,11 @@ import javax.servlet.http.HttpSession;
  */
 
 public class Login extends ActionSupport {
+    private AppService appService;
+    public void setAppService(AppService appService) {
+        this.appService = appService;
+    }
+
 
     public void doGet() throws Exception {
         HttpServletResponse response = ServletActionContext.getResponse();
@@ -40,15 +46,17 @@ public class Login extends ActionSupport {
         response.setCharacterEncoding("UTF-8");    //设置响应的字符集格式为UTF-8
         response.setContentType("text/html");  //设置响应正文的MIME类型
 
-        Configuration configuration = new Configuration().configure();
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tx = null;
+        //Configuration configuration = new Configuration().configure();
+        //SessionFactory sessionFactory = configuration.buildSessionFactory();
+        //Session session = sessionFactory.getCurrentSession();
+        //Transaction tx = null;
 
         try{
-            tx=session.beginTransaction();
-            Query result =session.createQuery("select username from Users where username = :username and password = :password").setParameter("username", username).setParameter("password", password);
-            List<String> list = result.list();
+            //tx=session.beginTransaction();
+            //Query result =session.createQuery("select username from Users where username = :username and password = :password").setParameter("username", username).setParameter("password", password);
+
+            //List<String> list = result.list();
+            List<String> list = appService.getUserByPassword(username,password);
 //使用forEach遍历集合
             if (list.size() > 0) {
                 isValid = true;
@@ -64,9 +72,9 @@ public class Login extends ActionSupport {
                 out.println(isValid);
             }
 
-            tx.commit();
+            //tx.commit();
         } catch (Exception e) {
-            tx.rollback();
+            //tx.rollback();
             throw new RuntimeException(e);
         } finally{
             //session.close();

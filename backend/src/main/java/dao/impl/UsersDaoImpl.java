@@ -20,10 +20,10 @@ public class UsersDaoImpl extends HibernateDaoSupport implements UsersDao {
 		getHibernateTemplate().merge(user);
 	}
 
-	public Users getUserById(int id) {
+	public Users getUserById(String id) {
 		@SuppressWarnings("unchecked")
 		List<Users> users = (List<Users>) getHibernateTemplate().find(
-				"from Users as b where b.id=?", id);
+				"from Users as b where b.username=?", id);
 		Users user = users.size() > 0 ? users.get(0) : null;
 		return user;
 	}
@@ -32,6 +32,12 @@ public class UsersDaoImpl extends HibernateDaoSupport implements UsersDao {
 		@SuppressWarnings("unchecked")
 		List<Users> users = (List<Users>) getHibernateTemplate()
 				.find("from Users");
+		return users;
+	}
+	public List<String> getUserByPassword(String username,String password)
+	{
+		@SuppressWarnings("unchecked")
+		List<String> users = (List<String>) getHibernateTemplate().find("select username from Users where username = ? and password = ?",new String[]{username, password});
 		return users;
 	}
 

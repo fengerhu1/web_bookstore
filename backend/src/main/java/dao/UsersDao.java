@@ -12,8 +12,9 @@ public interface UsersDao {
 
 	public void update(Users user);
 
-	public Users getUserById(int id);
+	public Users getUserById(String id);
 
 	public List<Users> getAllUsers();
 
+	public List<String> getUserByPassword(String username,String password);
 }

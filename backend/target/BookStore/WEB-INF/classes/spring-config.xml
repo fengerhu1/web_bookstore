@@ -2,9 +2,39 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/data/mongo
+    http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+    <!--<mongo:mongo id="mongo"  host="127.0.0.1" port="27017">-->
+        <!--&lt;!&ndash; 一些连接属性的设置可以不配置用默认的 &ndash;&gt;-->
+        <!--<mongo:options connections-per-host="64"-->
+                       <!--threads-allowed-to-block-for-connection-multiplier="100"-->
+                       <!--connect-timeout="900000" max-wait-time="1200000" auto-connect-retry="true"-->
+                       <!--socket-keep-alive="true" socket-timeout="1200000" slave-ok="true"-->
+                       <!--write-number="1" write-timeout="0" write-fsync="true" />-->
+    <!--</mongo:mongo>-->
+    <!--&lt;!&ndash; mongo的工厂，通过它来取得mongo实例,dbname为mongodb的数据库名，没有的话会自动创建 &ndash;&gt;-->
+    <!--<mongo:db-factory dbname="test" mongo-ref="mongo"/>-->
+    <!--&lt;!&ndash; mongodb的主要操作对象，所有对mongodb的增删改查的操作都是通过它完成 &ndash;&gt;-->
+    <!--<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
+        <!--<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />-->
+    <!--</bean>-->
 
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    <mongo:db-factory id="mongoDbFactory"
+                      host="127.0.0.1"
+                      port="27017"
+                      dbname="test"
+                      />
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+    </bean>
+
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close" p:driverClass="com.mysql.jdbc.Driver"
           p:jdbcUrl="jdbc:mysql://localhost:3306/test" p:user="root"
           p:password="19980211Hu" p:maxPoolSize="40" p:minPoolSize="1"
@@ -37,6 +67,12 @@
     <bean id="bookDao" class="dao.impl.BookDaoImpl">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    <bean id="userorderDao" class="dao.impl.UserorderDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="usersDao" class="dao.impl.UsersDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 
     <bean id="DeleteBook" class="administrator.Deletebook">
         <property name="obj" value="Book" />
@@ -54,4 +90,26 @@
         <property name="language" value="unKnow" />
         <property name="author" value="unKnow" />
     </bean>
+    <bean id="appService" class="service.impl.AppServiceImpl">
+        <!-- DAO -->
+        <property name="bookDao" ref="bookDao"></property>
+        <property name="userorderDao" ref="userorderDao"></property>
+        <property name="usersDao" ref="usersDao"></property>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true" />
+            <tx:method name="*" />
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+
+        <aop:pointcut id="beanPointcut" expression="bean(appService)" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="beanPointcut" />
+    </aop:config>
 </beans>

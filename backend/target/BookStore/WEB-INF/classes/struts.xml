@@ -70,6 +70,15 @@
         <action name="modifyadmin" class="administrator.ModifyAdmin" method="modify">
 
         </action>
+        <action name="mongoUserInfo" class="action.mongoUserInfo" method="findAll">
+
+        </action>
+        <action name="mongoUsershow" class="action.mongoUserDelete" method="findAll">
+
+        </action>
+        <action name="mongoUserUpdate" class="action.mongoUserUpdata" method="findAll">
+
+        </action>
     </package>
 
 </struts>

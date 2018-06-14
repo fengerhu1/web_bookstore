@@ -13,12 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import sample.Users;
+import service.AppService;
 //import org.hibernate.cfg.Configuration;
 
 /**
  * Servlet implementation class UserManagerServlet
  */
 public class ModifyAdmin extends ActionSupport {
+    private AppService appService;
+    public void setAppService(AppService appService) {
+        this.appService = appService;
+    }
 
     public void modify() throws Exception {
         HttpServletResponse response = ServletActionContext.getResponse();
@@ -27,26 +32,28 @@ public class ModifyAdmin extends ActionSupport {
         response.setCharacterEncoding("UTF-8");    //设置响应的字符集格式为UTF-8
         response.setContentType("text/html");  //设置响应正文的MIME类型
 
-        Configuration configuration = new Configuration().configure();
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
+        //Configuration configuration = new Configuration().configure();
+        //SessionFactory sessionFactory = configuration.buildSessionFactory();
+        //Session session = sessionFactory.getCurrentSession();
 
         String username = (String) request.getParameter("username");
         String sauthority = (String) request.getParameter("authority");
         int authority = Integer.valueOf(sauthority);
-        Transaction tx = null;
+        //Transaction tx = null;
         PrintWriter out = response.getWriter();
         try {
-            tx=session.beginTransaction();    //4.开始一个事务
-            Users fa=(Users)session.get(Users.class,username);
+            //tx=session.beginTransaction();    //4.开始一个事务
+            //Users fa=(Users)session.get(Users.class,username);
+            Users fa = appService.getUserById(username);
             fa.setAuthority(authority);
-            session.update(fa);
+            appService.updateUser(fa);
+            //session.update(fa);
             //out.println(list.get(0));
-            tx.commit();    //6.提交事务
+            //tx.commit();    //6.提交事务
         } catch (Exception e) {
-            if(tx!=null){
-                tx.rollback();  //事务回滚
-            }
+            //if(tx!=null){
+              //  tx.rollback();  //事务回滚
+            //}
             e.printStackTrace();
         }finally{
             //session.close();   //7.关闭session
