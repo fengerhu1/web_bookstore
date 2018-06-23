@@ -79,6 +79,18 @@
         <action name="mongoUserUpdate" class="action.mongoUserUpdata" method="findAll">
 
         </action>
+        <action name="modifyinventory" class="administrator.ModifyInventory" method="modify">
+
+        </action>
+        <action name="showinventory" class="action.ShowInventory" method="monthly">
+
+        </action>
+        <action name="showtu1" class="action.ShowTu" method="ShowTu">
+
+        </action>
+        <action name="showtu2" class="action.ShowTu2" method="ShowTu">
+
+        </action>
     </package>
 
 </struts>

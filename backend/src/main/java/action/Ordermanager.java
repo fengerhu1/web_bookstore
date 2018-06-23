@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import sample.Userorder;
 import sample.Amountpermouth;
+import sample.Inventory;
 //import org.hibernate.cfg.Configuration;
 
 /**
@@ -95,6 +96,27 @@ public class Ordermanager extends ActionSupport {
                     amountpermouth.setAmount(num);
                     session.save(amountpermouth);
                 }
+
+                Query result2 =session.createQuery("select total from Inventory where book = :bookname").setParameter("bookname", bookname);
+                List<Object> list2 = result2.list();
+                if (list2.size() > 0)
+                {
+                    Iterator it2=list2.iterator();
+                    int totalnum2 = -num +(Integer) it2.next();
+                    if (totalnum2 < 0 )
+                    {
+                        throw new Exception("error");
+                    }
+                    System.out.println("num per month1");
+                    Query query2 =session.createQuery("update Inventory set book=:bookname , total=:totalnum where book=:bookname2").setParameter("bookname", bookname).setParameter("bookname2", bookname).setParameter("totalnum", totalnum2);
+                    query2.executeUpdate();
+                }
+                else
+                {
+                    throw new Exception("error");
+                }
+
+
             }
             /*Book book = new Book();
             book.setLanguage("chinese");
@@ -104,14 +126,15 @@ public class Ordermanager extends ActionSupport {
             book.setTitle("dsadasda");
             session.save(book);*/
             tx.commit();
-
+            out.println(1);
         }
-        //catch (Exception e) {
-            //if(tx!=null){
-            //    tx.rollback();  //事务回滚
-            //}
-            //e.printStackTrace();
-        //}
+        catch (Exception e) {
+            if(tx!=null){
+                tx.rollback();  //事务回滚
+            }
+            e.printStackTrace();
+            out.println(0);
+        }
         finally{
             //session.close();   //7.关闭session
         }

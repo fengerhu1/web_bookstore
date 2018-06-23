@@ -11,6 +11,7 @@ const bg2 = {
 const dp={
     fontFamily:"Arial,Helvetica,sans-serif;font-size:100%",
 }
+var bookname;
 class Time extends Component {
         /*propTypes: {
             headers: React.PropTypes.arrayOf(
@@ -41,6 +42,12 @@ class Time extends Component {
         this.submit = this.submit.bind(this);
         this.modify = this.modify.bind(this);
         this.delete = this.delete.bind(this);
+        this.addinventory = this.addinventory.bind(this);
+        this.submitinventory = this.submitinventory.bind(this)
+    }
+    addinventory(e)
+    {
+        bookname = e.target.parentNode.parentNode.parentNode.childNodes[0].innerText;
     }
     submit(e)
     {
@@ -304,6 +311,29 @@ class Time extends Component {
             xmlhttp.open("GET","/deletebook?id="+id,true);
             xmlhttp.send();
         }
+    submitinventory(e)
+    {
+        var inventory = document.getElementById('inventory').value;
+        console.log(inventory);
+        console.log(bookname);
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+        {
+            //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+            xmlhttp=new XMLHttpRequest();
+        }
+        var data2=[];
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+
+            }
+        }
+
+        xmlhttp.open("GET","/modifyinventory?bookname="+bookname+"&inventory="+inventory,true);
+        xmlhttp.send();
+    }
         _renderTable() {
             return (
                 <table className="table table-bordered table-hover">
@@ -340,7 +370,35 @@ class Time extends Component {
                                     <br/>
                                     <br/>
                                     <button className="btn btn-default" onClick={this.delete}><span >删除</span></button>
+                                    <br/>
+                                    <br/>
+                                    <button className="btn btn-default" data-toggle="modal" data-target="#myModal2" onClick={this.addinventory}><span >库存</span></button>
                                 </td>
+                                <div className="modal fade" id="myModal2" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <h4 className="modal-title" id="myModalLabel2">
+                                                    modify the inventpry
+                                                </h4>
+                                            </div>
+                                            <div className="modal-body">
+                                                {bookname}
+                                                <input id="inventory" className="form-control" />
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-default" data-dismiss="modal">关闭
+                                                </button>
+                                                <button type="button" className="btn btn-primary" onClick={this.submitinventory}>
+                                                    提交更改
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </tr>
                         );
                     }, this)}

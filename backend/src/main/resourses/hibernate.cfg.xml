@@ -24,6 +24,8 @@
         <mapping class="sample.Userorder"/>
         <mapping class="sample.Amountpermouth"/>
         <mapping resource="sample/Amountpermouth.hbm.xml"/>
+        <mapping class="sample.Inventory"/>
+        <mapping resource="sample/Inventory.hbm.xml"/>
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->
 

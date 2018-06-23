@@ -111,6 +111,12 @@ class Shopcar extends Component {
         {
             if (xmlhttp.readyState==4 && xmlhttp.status==200)
             {
+                var rollback;
+                rollback = JSON.parse(xmlhttp.responseText)
+                if (rollback == 0)
+                {
+                    alert("false");
+                }
             }
         }
 

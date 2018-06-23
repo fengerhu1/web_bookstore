@@ -8,7 +8,8 @@ import Module3 from './Module3';
 import Head from './Head';
 import Column from './Column';
 import Footer from './Footer';
-import Shufflingbox from './Shufflingbox'
+import Shufflingbox from './Shufflingbox';
+import ECharts  from './ECharts ';
 import Search from './Search';
 var headers = ["Book", "Author", "Language", "Published", "Sales","buy"];
 var data = [

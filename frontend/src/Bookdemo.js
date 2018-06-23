@@ -49,6 +49,7 @@ const gp2={
     border:"#ffffff"
 }
 var monthly = 0;
+var inventory = 0;
 class Bookdemo extends Component {
     constructor(props) {
         super(props);
@@ -77,6 +78,25 @@ class Bookdemo extends Component {
         }
 
         xmlhttp.open("GET","/monthlyback?bookname="+this.props.location.state.info1,false);
+        xmlhttp.send();
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+        {
+            //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+            xmlhttp=new XMLHttpRequest();
+        }
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+
+                inventory = JSON.parse(xmlhttp.responseText)
+
+
+            }
+        }
+
+        xmlhttp.open("GET","/showinventory?bookname="+this.props.location.state.info1,false);
         xmlhttp.send();
     }
     click(){
@@ -124,7 +144,7 @@ class Bookdemo extends Component {
                                         <div className="clearfix"> </div>
                                     </div>
 
-                                    <h5 className="item_price"> {this.props.location.state.info4}(per) / monthly sales  ({monthly})</h5>
+                                    <h5 className="item_price"> {this.props.location.state.info4}(per)        monthly sales / inventory  ({monthly}/{inventory})</h5>
                                     <ul className="tag-men">
                                         <li><span>Title       </span>
                                             <span className="women1">: {this.props.location.state.info1}</span></li>
